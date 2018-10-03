@@ -66,6 +66,10 @@ public class Recognizer2 {
         match('B');
         varlist();
 
+        if (token() == 'X') {
+            className();
+        }
+
         while (token() == 'P') {
             method();
         }
@@ -73,12 +77,45 @@ public class Recognizer2 {
     }
 
     private void className() {
-        System.out.println("Class name token");
-
+        if ((token() == 'C') || (token() == 'D')) {
+            match(token());
+        } else
+            error();
     }
 
-    private void varlist() {
-        System.out.println("list var token");
+    private void varlist() { // fix
+
+        vardef();
+        while (token() == ',') {
+            vardef();
+        }
+    }
+
+    private void vardef() {
+        type();
+        varname();
+    }
+
+    private void varname(){
+        letter();
+        while (token() == ?){
+
+        }
+    }
+
+    private void char(){//fix
+
+        if ((token() == letter()) || (token( == digit()))){
+            ...
+        }
+    }
+
+    private void type() {
+
+        if ((token() == 'I') || (token() == 'S')) {
+            match(token());
+        } else
+            error();
     }
 
     private void method() {
