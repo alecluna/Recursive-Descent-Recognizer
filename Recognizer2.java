@@ -87,6 +87,7 @@ public class Recognizer2 {
 
         vardef();
         while (token() == ',') {
+            match(token());
             vardef();
         }
     }
@@ -96,18 +97,43 @@ public class Recognizer2 {
         varname();
     }
 
-    private void varname(){
+    private void varname() {
         letter();
-        while (token() == ?){
-
+        while ((token() == 'Y') || (token() == 'Z') || (token() == '0') || (token() == '1') || (token() == '2')
+                || (token() == '3')) {
+            charToken();
         }
     }
 
-    private void char(){//fix
+    private void charToken() {
 
-        if ((token() == letter()) || (token( == digit()))){
-            ...
+        if ((token() == 'Y') || (token() == 'Z')) {
+            letter();
+        } else {
+            digit();
         }
+    }
+
+    private void digit() {
+        if ((token() == '0') || (token() == '1') || (token() == '2') || (token() == '3')) {
+            match(token());
+        } else
+            error();
+    }
+
+    private void integer() {
+        digit();
+        while ((token() == '0') || (token() == '1') || (token() == '2') || (token() == '3')) {
+            digit();
+        }
+    }
+
+    private void letter() {
+
+        if ((token() == 'Y') || (token() == 'Z')) {
+            match(token());
+        } else
+            error();
     }
 
     private void type() {
@@ -118,13 +144,31 @@ public class Recognizer2 {
             error();
     }
 
-    private void method() {
-        varref();
-    }
-
     // <varref> ::= J|K
     private void varref() {
         if ((token() == 'J') || (token() == 'k')) {
+            match(token());
+        } else
+            error();
+    }
+
+    private void method() {
+        accessor();
+        type();
+        methodname();
+        varref();
+    }
+
+    private void accessor() {
+        if ((token() == 'P') || (token() == 'V')) {
+            match(token());
+        } else
+            error();
+    }
+
+    private void methodname() {
+
+        if ((token() == 'M') || (token() == 'N')) {
             match(token());
         } else
             error();
