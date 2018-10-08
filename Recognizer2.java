@@ -1,3 +1,48 @@
+
+/*
+Grammar: 
+<javaclass> ::= <classname> [X <classname>] B <varlist>; {<method>} E
+<classname> ::= C|D
+<varlist> ::= <vardef> {, <vardef>}
+<vardef> ::= <type> <varname> | <classname> <varref>
+<type> ::= I|S
+<varname> ::= <letter> {<char>}
+<letter> ::= Y|Z
+<char> ::= <letter> | <digit>
+<digit> ::= 0|1|2|3
+<integer> ::= <digit> {<digit>}
+<varref> ::= J|K
+<method> ::= <accessor> <type> <methodname> ([<varlist>]) B {<statemt>} <returnstatemt> E
+<accessor> ::= P|V
+<methodname> ::= M|N
+<statemt> ::= <ifstatemt> | <assignstatemt>;|<whilestatemt>|<methodcall>
+<ifstatemt> ::= F <cond> T B {<statemt>} E [L B {<statemt>} E]
+<assignstatemt> ::= <varname> = <mathexpr> | <varref> = <getvarref>
+<mathexpr> ::= <factor> {+ factor}
+<factor> ::= <oprnd> {* oprnd}
+<oprnd> ::= <integer> | <varname> | (<mathexpr>) | <methodcall>
+<getvarref> ::= O <classname>() | <methodcall>
+<whilestatemt> ::= W <cond> T B {<statemt>} E
+<cond> ::= (<oprnd> <operator> <oprnd>)
+<operator> ::= < | = | > | !
+<returnstatemt> ::= R <varname>;
+<methodcall> ::= <varref>.<methodname>( [ <varlist> ] )
+Note: The single letters are codes after lexical analysis for the following words:
+The tokens are:
+X for extends
+B for Begin of block
+E for End of block
+I for Integer
+S for String
+P for public
+V for private
+F for if
+T for then
+L for else
+O for new (to create a new class Object reference)
+W for while
+R for return
+*/
 import java.io.*;
 import java.util.Scanner;
 
@@ -201,6 +246,22 @@ public class Recognizer2 {
 
     private void cond() {
 
+        if (token() == '(') {
+
+            match(token());
+            operd();
+            oper();
+            operd();
+            match(token());
+        }
+    }
+
+    private void operator() {
+        if ((token() == '<') || (token() == '=') || (token() == '>') || (token() == '!')) {
+            match(token());
+        } else {
+            error();
+        }
     }
 
     private void accessor() {
@@ -218,21 +279,20 @@ public class Recognizer2 {
             error();
     }
 
-    methodcall(){
-        if ((token() == 'I') || (token() == 'S') || 
-        (token() == 'C') || (token() == 'D')){
-            varref();
-            match('.');
-            methodname();
+    private void methodcall() {
+        varref();
+        match('.');
+        methodname();
 
-            if ((token() == '(')){
+        if ((token() == '(')) {
 
-                if ((token() ==  'I') || (token() == 'S')){
-                    vardef();
-                    match(')');
-                 }
+            if ((token() == 'I') || (token() == 'S')) {
+                vardef();
+                match(')');
             }
         }
+    }
+
     }
 
     private void start() {
