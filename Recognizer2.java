@@ -63,8 +63,10 @@ public class Recognizer2 {
     private void match(char T) {
         if (T == token())
             advancePtr();
-        else
+        else {
             error();
+            System.out.println("Error with match token:" + T);
+        }
     }
 
     private void error() {
@@ -73,6 +75,7 @@ public class Recognizer2 {
         advancePtr();
     }
 
+    // the expression: CBIY;E$ is legal, whereas just a $ is illegal
     private void javaClass() {
         className();
 
@@ -81,6 +84,7 @@ public class Recognizer2 {
         }
         match('B');
         varlist();
+        match(';');
 
         while (token() == 'P') {
             method();
@@ -111,6 +115,9 @@ public class Recognizer2 {
         } else if ((token() == 'C') || (token() == 'D')) {
             className();
             varref();
+        } else {
+            error();
+            System.out.println("Error in verdef() function, token() is:" + token());
         }
     }
 
@@ -225,18 +232,17 @@ public class Recognizer2 {
         // statemt();
         // }
 
-        while ((token() == '<') || (token() == '=') || (token() == '>') || (token() == '!') || (token() == 'Y')
-                || (token() == 'Z') || (token() == '0') || (token() == '1') || (token() == '2') || (token() == '3')) {
+        while ((token() == 'F') || (token() == 'W') || (token() == 'Y') || (token() == 'Z') || (token() == 'J')
+                || (token() == 'K')) {
             statemt();
         }
+
         match('E');
         if (token() == 'L') {
             match(token());
             match('B');
-            // while (statement)
-            while ((token() == '<') || (token() == '=') || (token() == '>') || (token() == '!') || (token() == 'Y')
-                    || (token() == 'Z') || (token() == '0') || (token() == '1') || (token() == '2')
-                    || (token() == '3')) {
+            while ((token() == 'F') || (token() == 'W') || (token() == 'Y') || (token() == 'Z') || (token() == 'J')
+                    || (token() == 'K')) {
                 statemt();
             }
             match('E');
@@ -309,8 +315,8 @@ public class Recognizer2 {
         cond();
         match('T');
         match('B');
-        while ((token() == 'F') || (token() == 'Y') || (token() == 'Z') || (token() == '0') || (token() == '1')
-                || (token() == '2') || (token() == '3') || (token() == 'W')) {
+        while ((token() == 'F') || (token() == 'W') || (token() == 'Y') || (token() == 'Z') || (token() == 'J')
+                || (token() == 'K')) {
             statemt();
         }
         match('E');
