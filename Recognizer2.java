@@ -114,12 +114,28 @@ public class Recognizer2 {
         }
     }
 
+    private void type() {
+
+        if ((token() == 'I') || (token() == 'S')) {
+            match(token());
+        } else
+            error();
+    }
+
     private void varname() {
         letter();
         while ((token() == 'Y') || (token() == 'Z') || (token() == '0') || (token() == '1') || (token() == '2')
                 || (token() == '3')) {
             charToken();
         }
+    }
+
+    private void letter() {
+
+        if ((token() == 'Y') || (token() == 'Z')) {
+            match(token());
+        } else
+            error();
     }
 
     private void charToken() {
@@ -145,22 +161,6 @@ public class Recognizer2 {
         }
     }
 
-    private void letter() {
-
-        if ((token() == 'Y') || (token() == 'Z')) {
-            match(token());
-        } else
-            error();
-    }
-
-    private void type() {
-
-        if ((token() == 'I') || (token() == 'S')) {
-            match(token());
-        } else
-            error();
-    }
-
     private void varref() {
         if ((token() == 'J') || (token() == 'K')) {
             match(token());
@@ -182,8 +182,7 @@ public class Recognizer2 {
                 || (token() == 'Z') || (token() == '0') || (token() == '1') || (token() == '2') || (token() == '3')) {
             statemt();
         }
-        returnstatement();
-
+        returnstatemt();
         match('E');
     }
 
@@ -296,7 +295,7 @@ public class Recognizer2 {
         match('O');
 
         if ((token() == 'C') || (token() == 'D')) {
-            classname();
+            className();
             match('(');
             match(')');
         } else {
@@ -323,9 +322,9 @@ public class Recognizer2 {
         if (token() == '(') {
 
             match(token());
-            operd();
-            oper();
-            operd();
+            oprnd();
+            operator();
+            oprnd();
             match(token());
         }
     }
@@ -339,7 +338,6 @@ public class Recognizer2 {
     }
 
     private void returnstatemt() {
-
         match('R');
         varname();
         match(';');
