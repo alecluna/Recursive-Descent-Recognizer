@@ -202,7 +202,7 @@ public class Recognizer2 {
             error();
     }
 
-    private void statemt() {
+    private void statemt() { // double check this works
         if ((token() == 'F')) {
             ifstatemt();
         } else if ((token() == 'Y') || (token() == 'Z') || (token() == '0') || (token() == '1') || (token() == '2')
@@ -216,7 +216,7 @@ public class Recognizer2 {
         }
     }
 
-    private void ifstatemt() {
+    private void ifstatemt() { // TODO fix while statement loop
         match('F');
         cond();
         match('T');
@@ -226,12 +226,27 @@ public class Recognizer2 {
         // statemt();
         // }
 
+        while ((token() == '<') || (token() == '=') || (token() == '>') || (token() == '!') || (token() == 'Y')
+                || (token() == 'Z') || (token() == '0') || (token() == '1') || (token() == '2') || (token() == '3')) {
+            statemt();
+        }
+        match('E');
+        if (token() == 'L') {
+            match(token());
+            match('B');
+            // while (statement)
+            while ((token() == '<') || (token() == '=') || (token() == '>') || (token() == '!') || (token() == 'Y')
+                    || (token() == 'Z') || (token() == '0') || (token() == '1') || (token() == '2')
+                    || (token() == '3')) {
+                statemt();
+            }
+            match('E');
+        }
     }
 
     private void assignstatemt() {
 
-        if ((token() == 'Y') || (token() == 'Z') || (token() == '0') || (token() == '1') || (token() == '2')
-                || (token() == '3')) {
+        if ((token() == 'Y') || (token() == 'Z')) {
             varname();
             match('=');
             mathexpr();
@@ -239,6 +254,16 @@ public class Recognizer2 {
             varref();
             match('=');
             getvarref();
+        } else {
+            error();
+        }
+    }
+
+    private void mathexpr() {
+
+        factor();
+        while (token() == '+') {
+            factor();
         }
     }
 
