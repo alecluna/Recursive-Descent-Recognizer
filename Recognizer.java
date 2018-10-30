@@ -4,14 +4,6 @@ import java.util.Scanner;
 // Recognizer for simple expression grammar
 // Written by Alec Luna 3/3/18
 //
-/*
-I am using the professor's given example code to increment through the characters that are input, error checking, and output.
-* To compile and run program on athena:  javac Rocognizer.java --> java Rocognizer --> input expression
-* INPUT FORMATTING: No spaces and accepts all letters
-  BEGIN INPUT WITH A $ SYMBOL 
-*/
-//
-
 public class Recognizer {
 	static String inputString;
 	static int index = 0;
